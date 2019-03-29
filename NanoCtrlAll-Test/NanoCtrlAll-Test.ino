@@ -52,12 +52,10 @@ void stop(){
 for (int stop = HIGH;stop == HIGH;stop = digitalRead(stopbutton))
 {
   delay(70);
-  /*
-  Serial.println(stop);
+  //Serial.println(stop);
   Serial.println("The pin3 Input HIGH.So now We Stopping.");
-  */
-  //myGLCD.clrScr();
-  myGLCD.print("Wait For Start",0,0);
+  myGLCD.clrScr();
+  //myGLCD.print("Wait For Start",CENTER,0);
   myGLCD.print("Stopping",CENTER,8);
   myGLCD.print("In/Out:",0,16);
   myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
@@ -65,6 +63,12 @@ for (int stop = HIGH;stop == HIGH;stop = digitalRead(stopbutton))
   myGLCD.print(String(basicouttimes),62,16);
   myGLCD.print("Remain:Null",0,24);
   delay(70);
+  //-------新增加功能------暂停时停止进/排水、停止马达-------------//
+  digitalWrite(sign1, LOW);  //关闭进水阀
+  digitalWrite(sign2, LOW);  //关闭排水阀
+  digitalWrite(input1,LOW);  //停止马达
+  digitalWrite(input2,LOW); 
+  //-------新增加功能------暂停时停止进/排水、停止马达-------------//
 }
 }
 //-------------------------结束判断是否暂停工作---------------//
@@ -75,11 +79,9 @@ void loop(){
 for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 {
   delay(50);
-  /*
-  Serial.println(state);
-  Serial.println("Wait for pin2 Input LOW.So now We Stopping.");
+  //Serial.println(state);
+  Serial.println("Wait for pin19 Input LOW to start works..");
   delay(50);
-  */
   //---------------------开始进/排水时间信号输入------------//
   int timestate = digitalRead(addtimes);
   /*
@@ -95,16 +97,14 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 */
    basicintimes = basicintimes + 5;
    basicouttimes = basicouttimes + 5;
-/*
    Serial.println(" The basicintimes is change to:");
    Serial.println(basicintimes);
    Serial.println(" The basicouttimes is change to:");
    Serial.println(basicouttimes);
    delay(100);
-*/
    }
   myGLCD.clrScr();
-  myGLCD.print("Wait For Start",0,0);
+  myGLCD.print("Wait For Start",CENTER,0);
   myGLCD.print("In/Out:",0,16);
   myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
   myGLCD.print("/",56,16);
@@ -115,7 +115,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 }
 Serial.println("Now We Work.");
 myGLCD.clrScr();
-myGLCD.print("Start Working",0,0);
+myGLCD.print("Working",CENTER,0);
 myGLCD.print("In/Out:",0,16);
 myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
 myGLCD.print("/",56,16);
@@ -129,10 +129,8 @@ delay(50);
 //-------------------------开始工作---------------------------//
  for(int b = 0; b < 3; b++)
  {
-  /*
  Serial.println(b);
- Serial.println("------------");
- */
+ Serial.println("------The Big Loop------");
  delay(3000);  //延时3秒启动
 
  //----------------------控制进水阀进水
@@ -144,10 +142,8 @@ delay(50);
  //----------------------控制马达左右转
  for(int c = 0; c < 60; c++)
  {
-  /*
   Serial.println(c);
-  Serial.println("-------------------------------");
-  */
+  Serial.println("------The Small Loop------");
 
  //forward 向前转------一个循环10秒
  digitalWrite(input1,HIGH); //给高电平-顺时针转
@@ -171,7 +167,7 @@ delay(50);
 
  //------------------下面用于计算显示倒计时---------------------//
  myGLCD.clrScr();
- myGLCD.print("Working",0,0);
+ myGLCD.print("Working",CENTER,0);
  myGLCD.print("In/Out:",0,16);
  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
  myGLCD.print("/",56,16);
