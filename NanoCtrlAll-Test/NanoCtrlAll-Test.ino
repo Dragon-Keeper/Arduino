@@ -1,7 +1,7 @@
  #include <LCD5110_Basic.h>
 
 //下面这行用于定义LCD用到的设置引脚
-LCD5110 myGLCD(3,4,5,6,7);
+LCD5110 myGLCD(9,8,10,11,12); //myGLCD(CLK,DIN,DC,RST,CE)
 //下面三行用于引入库的字体
 extern uint8_t SmallFont[];
 extern uint8_t MediumNumbers[];
