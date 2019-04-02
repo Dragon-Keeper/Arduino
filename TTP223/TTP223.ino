@@ -1,9 +1,9 @@
-int pin4;
-int pin5;
+int pin2;
+//int pin5;
 
 void setup() {
-  pinMode(4,INPUT);   //设置引脚 4 为输入模式
-  pinMode(5,INPUT);   //设置引脚 5 为输入模式
+  pinMode(2,INPUT);   //设置引脚 4 为输入模式
+  //pinMode(5,INPUT);   //设置引脚 5 为输入模式
   Serial.begin(9600); //设置波特率为9600
 }
  
@@ -15,9 +15,9 @@ void loop() {
   delay(500);
   Serial.println("-------------4------------");
   */
-  Serial.println(analogRead(5)); //串口输出 5读取到的值
-  pin5 = digitalRead(5);
-  Serial.println(pin5);
+  Serial.println(analogRead(2)); //串口输出 5读取到的值
+  pin2 = digitalRead(2);
+  Serial.println(pin2);
   delay(500);
   Serial.println("-------------5------------");
 
