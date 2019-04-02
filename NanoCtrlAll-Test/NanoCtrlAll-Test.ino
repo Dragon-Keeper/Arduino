@@ -25,6 +25,13 @@ volatile long basicouttimes = 40;
 //下面这行定义函数用于计算剩余时间
 volatile long remain;
 volatile long a;
+//下面这行定义函数用于暂停时判断显示不同页面
+volatile int choice = 0; 
+volatile int page = 1; 
+//下面这行定义函数用于重置系统
+/*不使用任何硬件引脚，Arduino有一个名为resetFunc（）的内置函数，
+ * 我们声明函数地址为0，当我们执行此功能时，Arduino将自动重置*/
+void(* resetFunc) (void) = 0;
 
 void setup() {
 Serial.begin (9600);
@@ -42,33 +49,153 @@ pinMode(sign2, OUTPUT);
 pinMode(addtimes, INPUT_PULLUP); //设置管脚为进/排水时间信号输入上拉，令到它值为HIGH
 pinMode(startbutton, INPUT); //设置管脚为开始信号输入
 pinMode(stopbutton, INPUT); //设置管脚为暂停信号输入
-attachInterrupt(digitalPinToInterrupt(stopbutton), stop, HIGH); //监视中断输入引脚3的电平是否低电平
+attachInterrupt(digitalPinToInterrupt(stopbutton), stop, LOW); //监视中断输入引脚3的电平是否低电平
 }
 //HIGH:断电:1
 // LOW:通电:0
 //-------------------------开始判断是否暂停工作---------------//
+
 void stop(){
 //HIGH:断电 LOW:通电
-for (int stop = HIGH;stop == HIGH;stop = digitalRead(stopbutton))
+for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
 {
-  delay(70);
-  //Serial.println(stop);
-  Serial.println("The pin3 Input HIGH.So now We Stopping.");
-  myGLCD.clrScr();
-  //myGLCD.print("Wait For Start",CENTER,0);
-  myGLCD.print("Stopping",CENTER,8);
-  myGLCD.print("In/Out:",0,16);
-  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
-  myGLCD.print("/",56,16);
-  myGLCD.print(String(basicouttimes),62,16);
-  myGLCD.print("Remain:Null",0,24);
-  delay(70);
-  //-------新增加功能------暂停时停止进/排水、停止马达-------------//
+    //-------新增加功能------暂停时停止进/排水、停止马达-------------//
   digitalWrite(sign1, LOW);  //关闭进水阀
   digitalWrite(sign2, LOW);  //关闭排水阀
   digitalWrite(input1,LOW);  //停止马达
   digitalWrite(input2,LOW); 
   //-------新增加功能------暂停时停止进/排水、停止马达-------------//
+  /*
+  myGLCD.clrScr();
+  myGLCD.print("Stopping",CENTER,0);
+  myGLCD.print("In/Out:",0,8);
+  myGLCD.print(String(basicintimes),44,8);//由于时间是整数，所以要转换成字符串
+  myGLCD.print("/",56,8);
+  myGLCD.print(String(basicouttimes),62,8);
+  myGLCD.print("Remain:Null",0,16);
+  myGLCD.print("More...",0,24);
+  delay(1000);
+  */
+  Serial.println("Stopping");
+
+  if(choice == 0) //初始时choice=0，所以显示总界面
+  {
+  myGLCD.clrScr();
+  myGLCD.print("Stopping",CENTER,0);
+  myGLCD.print("Here You Can",CENTER,8);
+  myGLCD.print("Water In/Out",CENTER,16);
+  myGLCD.print("Reset System",CENTER,24);
+  myGLCD.print("Click More...",0,32);
+  delay(150);
+  //-------下面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
+  if(digitalRead(addtimes) < 1) 
+  {
+  delay(150);
+  /*
+   * page=1，page=!page这句将page赋值为其反转值，1变为0，本来choice=0，所以
+   * choice = choice + page结果为：choice = 0 + 0 =0 .所以依然在本语句内循环。
+   * 但再次循环时由于page已经赋值为0，所以page=!page这句将page赋值为其反转值
+   * page赋值为1，所以choice = choice + page结果为：choice = 0 + 1 =1. 由于
+   * choice=1，所以跳出本循环到choice==1循环中。
+   * 在下个循环中如果检测到按键，依然按照上面两次循环后+1到下一个循环。
+  */
+  page = !page; 
+  Serial.println(page);
+  choice = choice + page;
+  Serial.println(choice);
+  }
+  //-------上面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
+  Serial.println("000000000000000");
+  }
+  if(choice == 1) //显示进水选项页面，按住开始键时进水，放开则停止
+  {
+  myGLCD.clrScr();
+  myGLCD.print("Stopping",CENTER,0);
+  myGLCD.print("Water In:Yes?",0,16);
+  myGLCD.print("Press Start",CENTER,24);
+  myGLCD.print("More...",0,32);
+  delay(150);
+  if(digitalRead(addtimes) < 1) 
+  {
+  delay(150);
+  page = !page;
+  Serial.println(page);
+  choice = choice + page;
+  Serial.println(choice);
+  }
+  //-----下面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
+  if(digitalRead(startbutton) < 1)
+  {
+  digitalWrite(sign1, HIGH); //打开进水阀
+  /*-----官网已清楚说明delay在中断内不正常------//
+  * Inside the attached function, delay() won't work and the value returned by millis() will not increment.
+  * 就是说：在中断内，delay()不能正常工作，本来中断就是短频快的东西，
+  * 一般这种单CPU单线程执行的设计中，都不希望在中断中做太多事，做太多事，
+  * 其它事情都会被阻塞在哪里。。
+  * 所以中断内的delay(1000)可能不到1秒，要实现通电效果的话，就要将它设置很大
+  * 这里delay(200000)等于正常的delay(1000);所以约为200倍。
+  //-----官网已清楚说明delay在中断内不正常------*/
+  delay(400000);
+  }
+  else
+  digitalWrite(sign1, LOW); //关闭进水阀
+  //-----上面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
+  Serial.println("111111111111111");
+  }
+  if(choice == 2) //显示排水选项页面，按住开始键时排水，放开则停止
+  {
+  myGLCD.clrScr();
+  myGLCD.print("Stopping",CENTER,0);
+  myGLCD.print("Water Out:Yes?",0,16);
+  myGLCD.print("Press Start",CENTER,24);
+  myGLCD.print("Click More...",0,32);
+  delay(150);
+  if(digitalRead(addtimes) < 1) 
+  {
+  delay(150);
+  page = !page;
+  Serial.println(page);
+  choice = choice + page;
+  Serial.println(choice);
+  }
+  if(digitalRead(startbutton) < 1) //下面这段用于打开排水阀
+  {
+  digitalWrite(sign2, HIGH); //打开排水阀
+  delay(400000);
+  }
+  else
+  digitalWrite(sign2, LOW); //关闭排水阀
+  Serial.println("22222222222222");
+  }
+  if(choice == 3) //显示复位页面
+  {
+  myGLCD.clrScr();
+  myGLCD.print("Stopping",CENTER,0);
+  myGLCD.print("Reset System",CENTER,16);
+  myGLCD.print("Press Start",CENTER,24);
+  myGLCD.print("No More...",0,32);
+  delay(150);
+  if(digitalRead(addtimes) < 1) 
+  {
+  delay(150);
+  page = !page;
+  Serial.println(page);
+  choice = choice + page;
+  Serial.println(choice);
+  }
+  if(digitalRead(startbutton) < 1) //下面这段用于重置系统
+  resetFunc(); //这句用于调用重置命令
+  Serial.println("33333333333333333");
+  }
+  if(choice == 4) //用于返回第一个页面
+  {
+ //自动跳出循环
+  Serial.println(choice);
+  delay(150);
+  choice = 0;
+  Serial.println("444444444444444444");
+  }
+
 }
 }
 //-------------------------结束判断是否暂停工作---------------//
@@ -191,6 +318,4 @@ delay(50);
  //-------------------------结束工作---------------------------//
  }
 }
-
-
 
