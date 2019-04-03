@@ -104,7 +104,6 @@ for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
   choice = choice + page;
   Serial.println(choice);
   }
-  //-------上面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
   Serial.println("000000000000000");
   }
   if(choice == 1) //显示进水选项页面，按住开始键时进水，放开则停止
@@ -123,6 +122,7 @@ for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
   choice = choice + page;
   Serial.println(choice);
   }
+  
   //-----下面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
   if(digitalRead(startbutton) < 1)
   {
@@ -140,6 +140,7 @@ for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
   else
   digitalWrite(sign1, LOW); //关闭进水阀
   //-----上面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
+  
   Serial.println("111111111111111");
   }
   if(choice == 2) //显示排水选项页面，按住开始键时排水，放开则停止
@@ -195,6 +196,7 @@ for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
   choice = 0;
   Serial.println("444444444444444444");
   }
+  //-------上面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
 
 }
 }
@@ -202,6 +204,7 @@ for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
 
 void loop(){
   myGLCD.setFont(SmallFont); //设置LCD显示的字体大小
+  
 //---------------------开始判断是否开始工作---------------//
 for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 {
@@ -271,7 +274,19 @@ delay(50);
  {
   Serial.println(c);
   Serial.println("------The Small Loop------");
-
+  
+ //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+ myGLCD.clrScr();
+ myGLCD.print("Working",CENTER,0);
+ myGLCD.print("In/Out:",0,16);
+ myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
+ myGLCD.print("/",56,16);
+ myGLCD.print(String(basicouttimes),62,16);
+ myGLCD.print("Remain:",0,24);
+ myGLCD.print(String(a),44,24);
+ delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+  
  //forward 向前转------一个循环10秒
  digitalWrite(input1,HIGH); //给高电平-顺时针转
  digitalWrite(input2,LOW);  //给低电平
@@ -281,6 +296,18 @@ delay(50);
  digitalWrite(input1,LOW);
  digitalWrite(input2,LOW);  
  delay(2000);  //停止2秒
+ 
+ //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+ myGLCD.clrScr();
+ myGLCD.print("Working",CENTER,0);
+ myGLCD.print("In/Out:",0,16);
+ myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
+ myGLCD.print("/",56,16);
+ myGLCD.print(String(basicouttimes),62,16);
+ myGLCD.print("Remain:",0,24);
+ myGLCD.print(String(a),44,24);
+ delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  
  //back 向后转
  digitalWrite(input1,LOW);  //给低电平-逆时针转
@@ -300,9 +327,7 @@ delay(50);
  myGLCD.print("/",56,16);
  myGLCD.print(String(basicouttimes),62,16);
  myGLCD.print("Remain:",0,24);
- //int a;
  a = remain - long(c * 10 / 60);
- //a = remain - long(b * (basicintimes + basicouttimes) / 60 + c * 10 / 60);
  myGLCD.print(String(a),44,24);
  delay(50);
  }
