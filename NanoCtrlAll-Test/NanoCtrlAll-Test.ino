@@ -17,6 +17,8 @@ int sign2= 18; // 定义uno的pin 18 用于控制排水
 int startbutton = 19; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
 int stopbutton = 2; //接中断信号的脚用于控制暂停
+volatile int stop_state = 1;
+volatile int stop_ctrl = 1;
 //下面这行用于定义进/排水时间每摁一次加5秒的输入端口pin 14
 int addtimes = 14;
 //下面两行用于定义进水、排水时间初始化，单位：秒
@@ -47,8 +49,8 @@ pinMode(sign2, OUTPUT);
  * 2.可以不使用内部上拉电阻，在电路上添加按键的上拉电阻或下拉电阻，可达到相同效果。
  */
 pinMode(addtimes, INPUT_PULLUP); //设置管脚为进/排水时间信号输入上拉，令到它值为HIGH
-pinMode(startbutton, INPUT); //设置管脚为开始信号输入
-pinMode(stopbutton, INPUT); //设置管脚为暂停信号输入
+pinMode(startbutton, INPUT_PULLUP); //设置管脚为开始信号输入
+pinMode(stopbutton, INPUT_PULLUP); //设置管脚为暂停信号输入
 attachInterrupt(digitalPinToInterrupt(stopbutton), stop, LOW); //监视中断输入引脚3的电平是否低电平
 }
 //HIGH:断电:1
@@ -56,9 +58,13 @@ attachInterrupt(digitalPinToInterrupt(stopbutton), stop, LOW); //监视中断输
 //-------------------------开始判断是否暂停工作---------------//
 
 void stop(){
-//HIGH:断电 LOW:通电
-for (int stop = LOW;stop == LOW;stop = digitalRead(stopbutton))
+//HIGH:断电 LOW:通电OW;
+for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead(stopbutton))
 {
+  //下面两行用于调试点触开关变自锁开关用
+  Serial.println(stop_state);
+  Serial.println(stop_ctrl);
+  delay(100000);
     //-------新增加功能------暂停时停止进/排水、停止马达-------------//
   digitalWrite(sign1, LOW);  //关闭进水阀
   digitalWrite(sign2, LOW);  //关闭排水阀
@@ -211,6 +217,9 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
   delay(50);
   //Serial.println(state);
   Serial.println("Wait for pin19 Input LOW to start works..");
+  //下面两行用于调试点触开关变自锁开关用
+  Serial.println(stop_state);
+  Serial.println(stop_ctrl);
   delay(50);
   //---------------------开始进/排水时间信号输入------------//
   int timestate = digitalRead(addtimes);
