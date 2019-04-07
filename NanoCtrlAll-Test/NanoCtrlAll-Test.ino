@@ -64,8 +64,9 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   //下面两行用于调试点触开关变自锁开关用
   Serial.println(stop_state);
   Serial.println(stop_ctrl);
+  //！！！！！！！！！！下面这个时间如果变小的话，不能自锁进入暂停！！！！！！！！！！
   delay(100000);
-    //-------新增加功能------暂停时停止进/排水、停止马达-------------//
+  //-------新增加功能------暂停时停止进/排水、停止马达-------------//
   digitalWrite(sign1, LOW);  //关闭进水阀
   digitalWrite(sign2, LOW);  //关闭排水阀
   digitalWrite(input1,LOW);  //停止马达
@@ -96,7 +97,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   //-------下面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
   if(digitalRead(addtimes) < 1) 
   {
-  delay(150);
+  delay(50);
   /*
    * page=1，page=!page这句将page赋值为其反转值，1变为0，本来choice=0，所以
    * choice = choice + page结果为：choice = 0 + 0 =0 .所以依然在本语句内循环。
@@ -122,7 +123,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   delay(150);
   if(digitalRead(addtimes) < 1) 
   {
-  delay(150);
+  delay(50);
   page = !page;
   Serial.println(page);
   choice = choice + page;
@@ -159,7 +160,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   delay(150);
   if(digitalRead(addtimes) < 1) 
   {
-  delay(150);
+  delay(50);
   page = !page;
   Serial.println(page);
   choice = choice + page;
@@ -184,7 +185,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   delay(150);
   if(digitalRead(addtimes) < 1) 
   {
-  delay(150);
+  delay(50);
   page = !page;
   Serial.println(page);
   choice = choice + page;
