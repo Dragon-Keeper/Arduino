@@ -17,8 +17,11 @@ int sign2= 18; // 定义uno的pin 18 用于控制排水
 int startbutton = 19; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
 int stopbutton = 2; //接中断信号的脚用于控制暂停
+//下面两行用于将“暂停”点触开关变自锁开关
 volatile int stop_state = 1;
 volatile int stop_ctrl = 1;
+//下面这行用于暂停中持续放/排水
+volatile int i= 1;
 //下面这行用于定义进/排水时间每摁一次加5秒的输入端口pin 14
 int addtimes = 14;
 //下面两行用于定义进水、排水时间初始化，单位：秒
@@ -118,8 +121,8 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   myGLCD.clrScr();
   myGLCD.print("Stopping",CENTER,0);
   myGLCD.print("Water In:Yes?",0,16);
-  myGLCD.print("Press Start",CENTER,24);
-  myGLCD.print("More...",0,32);
+  myGLCD.print("Press To Start",CENTER,24);
+  myGLCD.print("Click More...",0,32);
   delay(150);
   if(digitalRead(addtimes) < 1) 
   {
@@ -134,28 +137,41 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   if(digitalRead(startbutton) < 1)
   {
   digitalWrite(sign1, HIGH); //打开进水阀
-  /*-----官网已清楚说明delay在中断内不正常------//
+    /*-----官网已清楚说明delay在中断内不正常------//
   * Inside the attached function, delay() won't work and the value returned by millis() will not increment.
   * 就是说：在中断内，delay()不能正常工作，本来中断就是短频快的东西，
   * 一般这种单CPU单线程执行的设计中，都不希望在中断中做太多事，做太多事，
   * 其它事情都会被阻塞在哪里。。
   * 所以中断内的delay(1000)可能不到1秒，要实现通电效果的话，就要将它设置很大
   * 这里delay(200000)等于正常的delay(1000);所以约为200倍。
-  //-----官网已清楚说明delay在中断内不正常------*/
-  delay(400000);
+  *-----官网已清楚说明delay在中断内不正常------*/
+  delay(400000); //添加2秒延时以防破坏逻辑影响下面的循环
+   //-----下面是一个循环，等待按start键打破循环并且关闭进水阀------//
+  while (digitalRead(startbutton) > 0)
+  {
+    i++;
+    Serial.println("Water In Coming");
+    myGLCD.clrScr();
+    myGLCD.print("Stopping",CENTER,0);
+    myGLCD.print("Water's Coming",0,16);
+    myGLCD.print("Press To Stop",CENTER,24);
+    myGLCD.print("Click More...",0,32);
+    delay(150);
+  }
   }
   else
   digitalWrite(sign1, LOW); //关闭进水阀
+
   //-----上面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
-  
   Serial.println("111111111111111");
   }
+  
   if(choice == 2) //显示排水选项页面，按住开始键时排水，放开则停止
   {
   myGLCD.clrScr();
   myGLCD.print("Stopping",CENTER,0);
   myGLCD.print("Water Out:Yes?",0,16);
-  myGLCD.print("Press Start",CENTER,24);
+  myGLCD.print("Press To Start",CENTER,24);
   myGLCD.print("Click More...",0,32);
   delay(150);
   if(digitalRead(addtimes) < 1) 
@@ -170,6 +186,17 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   {
   digitalWrite(sign2, HIGH); //打开排水阀
   delay(400000);
+ while (digitalRead(startbutton) > 0)
+  {
+    i++;
+    Serial.println("Water Go Outing");
+    myGLCD.clrScr();
+    myGLCD.print("Stopping",CENTER,0);
+    myGLCD.print("Water's Outing",0,16);
+    myGLCD.print("Press To Stop",CENTER,24);
+    myGLCD.print("Click More...",0,32);
+    delay(150);
+  }
   }
   else
   digitalWrite(sign2, LOW); //关闭排水阀
@@ -180,7 +207,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   myGLCD.clrScr();
   myGLCD.print("Stopping",CENTER,0);
   myGLCD.print("Reset System",CENTER,16);
-  myGLCD.print("Press Start",CENTER,24);
+  myGLCD.print("Press To Reset",CENTER,24);
   myGLCD.print("No More...",0,32);
   delay(150);
   if(digitalRead(addtimes) < 1) 
