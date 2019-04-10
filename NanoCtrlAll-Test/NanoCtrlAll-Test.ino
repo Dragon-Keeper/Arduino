@@ -46,6 +46,10 @@ pinMode(input1,OUTPUT);
 pinMode(input2,OUTPUT);
 pinMode(sign1, OUTPUT); 
 pinMode(sign2, OUTPUT); 
+//digitalWrite(sign1, HIGH);  //关闭进水阀
+//digitalWrite(sign2, HIGH);  //关闭排水阀
+//digitalWrite(input1,HIGH);  //停止马达
+//digitalWrite(input2,HIGH); 
 /* -----------下面是下一句代码里：INPUT_PULLUP的用法解释-------------
  * 1.由于Arduino上电后，数字I/O管脚处于悬空状态，此时通过digitalRead()读到的是一个不稳定的值(可能是高，也可能是低)。
  * 所以通过pinMode()函数设置按键引脚为上拉输入模式。即使用内部上拉电阻，按键未按下时，引脚将为高电平，按键按下为低电平。
@@ -70,10 +74,10 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   //！！！！！！！！！！下面这个时间如果变小的话，不能自锁进入暂停！！！！！！！！！！
   delay(100000);
   //-------新增加功能------暂停时停止进/排水、停止马达-------------//
-  digitalWrite(sign1, LOW);  //关闭进水阀
-  digitalWrite(sign2, LOW);  //关闭排水阀
-  digitalWrite(input1,LOW);  //停止马达
-  digitalWrite(input2,LOW); 
+  digitalWrite(sign1, HIGH);  //关闭进水阀
+  digitalWrite(sign2, HIGH);  //关闭排水阀
+  digitalWrite(input1,HIGH);  //停止马达
+  digitalWrite(input2,HIGH); 
   //-------新增加功能------暂停时停止进/排水、停止马达-------------//
   /*
   myGLCD.clrScr();
@@ -124,6 +128,9 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   myGLCD.print("Press To Start",CENTER,24);
   myGLCD.print("Click More...",0,32);
   delay(150);
+  digitalWrite(sign1, HIGH); //先关闭进水阀
+  Serial.println(digitalRead(sign1));
+  Serial.println(digitalRead(sign2));
   if(digitalRead(addtimes) < 1) 
   {
   delay(50);
@@ -136,7 +143,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   //-----下面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
   if(digitalRead(startbutton) < 1)
   {
-  digitalWrite(sign1, HIGH); //打开进水阀
+  digitalWrite(sign1, LOW); //打开进水阀
     /*-----官网已清楚说明delay在中断内不正常------//
   * Inside the attached function, delay() won't work and the value returned by millis() will not increment.
   * 就是说：在中断内，delay()不能正常工作，本来中断就是短频快的东西，
@@ -157,10 +164,12 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
     myGLCD.print("Press To Stop",CENTER,24);
     myGLCD.print("Click More...",0,32);
     delay(150);
+    Serial.println(digitalRead(sign1));
+    Serial.println(digitalRead(sign2));
   }
   }
   else
-  digitalWrite(sign1, LOW); //关闭进水阀
+  digitalWrite(sign1, HIGH); //关闭进水阀
 
   //-----上面这段通过startbutton脚的电平变低然后计算判断是否执行命令-----//
   Serial.println("111111111111111");
@@ -174,6 +183,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   myGLCD.print("Press To Start",CENTER,24);
   myGLCD.print("Click More...",0,32);
   delay(150);
+  digitalWrite(sign2, HIGH); //先关闭排水阀
   if(digitalRead(addtimes) < 1) 
   {
   delay(50);
@@ -184,7 +194,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   }
   if(digitalRead(startbutton) < 1) //下面这段用于打开排水阀
   {
-  digitalWrite(sign2, HIGH); //打开排水阀
+  digitalWrite(sign2, LOW); //打开排水阀
   delay(400000);
  while (digitalRead(startbutton) > 0)
   {
@@ -199,7 +209,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   }
   }
   else
-  digitalWrite(sign2, LOW); //关闭排水阀
+  digitalWrite(sign2, HIGH); //关闭排水阀
   Serial.println("22222222222222");
   }
   if(choice == 3) //显示复位页面
@@ -238,6 +248,12 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
 
 void loop(){
   myGLCD.setFont(SmallFont); //设置LCD显示的字体大小
+  //-------程序启动时先默认停止进/排水、停止马达-------------//
+  digitalWrite(sign1, HIGH);  //关闭进水阀
+  digitalWrite(sign2, HIGH);  //关闭排水阀
+  digitalWrite(input1,HIGH);  //停止马达
+  digitalWrite(input2,HIGH); 
+  //-------程序启动时先默认停止进/排水、停止马达-------------//
   
 //---------------------开始判断是否开始工作---------------//
 for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
@@ -245,9 +261,11 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
   delay(50);
   //Serial.println(state);
   Serial.println("Wait for pin19 Input LOW to start works..");
+  Serial.println(digitalRead(sign1));
+  Serial.println(digitalRead(sign2));
   //下面两行用于调试点触开关变自锁开关用
-  Serial.println(stop_state);
-  Serial.println(stop_ctrl);
+  //Serial.println(stop_state);
+  //Serial.println(stop_ctrl);
   delay(50);
   //---------------------开始进/排水时间信号输入------------//
   int timestate = digitalRead(addtimes);
@@ -301,9 +319,9 @@ delay(50);
  delay(3000);  //延时3秒启动
 
  //----------------------控制进水阀进水
- digitalWrite(sign1, HIGH); //打开进水阀
+ digitalWrite(sign1, LOW); //打开进水阀
  delay(basicintimes*1000); //进水的时间默认20秒
- digitalWrite(sign1, LOW);  //关闭进水阀
+ digitalWrite(sign1, HIGH);  //关闭进水阀
  delay(4000);
 
  //----------------------控制马达左右转
@@ -330,8 +348,8 @@ delay(50);
  delay(3000);   //转动3秒
 
  //stop 停止
- digitalWrite(input1,LOW);
- digitalWrite(input2,LOW);  
+ digitalWrite(input1,HIGH);
+ digitalWrite(input2,HIGH);  
  delay(2000);  //停止2秒
  
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
@@ -352,8 +370,8 @@ delay(50);
  delay(3000);  //转动3秒
 
  //stop 停止
- digitalWrite(input1,LOW);
- digitalWrite(input2,LOW);  
+ digitalWrite(input1,HIGH);
+ digitalWrite(input2,HIGH);  
  delay(2000);  //停止2秒
 
  //------------------下面用于计算显示倒计时---------------------//
@@ -372,9 +390,9 @@ delay(50);
  //------------------上面用于计算显示倒计时---------------------//
 
  //----------------------控制排水阀排水
- digitalWrite(sign2, HIGH); //打开排水阀
+ digitalWrite(sign2, LOW); //打开排水阀
  delay(basicouttimes*1000); //排水的时间默认40秒
- digitalWrite(sign2, LOW);  //关闭排水阀
+ digitalWrite(sign2, HIGH);  //关闭排水阀
 
  delay(50);
  //-------------------------结束工作---------------------------//
