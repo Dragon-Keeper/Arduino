@@ -312,7 +312,7 @@ delay(50);
 //-------------------------结束判断是否开始工作---------------//
 
 //-------------------------开始工作---------------------------//
- for(int b = 0; b < 3; b++)
+ for(int b = 0; b < 5; b++) //工作5个大循环共30分钟
  {
  Serial.println(b);
  Serial.println("------The Big Loop------");
@@ -325,7 +325,7 @@ delay(50);
  delay(4000);
 
  //----------------------控制马达左右转
- for(int c = 0; c < 60; c++)
+ for(int c = 0; c < 36; c++) //一个小循环10秒，36个共6分钟
  {
   Serial.println(c);
   Serial.println("------The Small Loop------");
@@ -342,7 +342,7 @@ delay(50);
  delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
   
- //forward 向前转------一个循环10秒
+ //forward 向前转
  digitalWrite(input1,HIGH); //给高电平-顺时针转
  digitalWrite(input2,LOW);  //给低电平
  delay(3000);   //转动3秒
