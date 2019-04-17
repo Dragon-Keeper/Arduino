@@ -333,6 +333,9 @@ delay(50);
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
+ myGLCD.print(String(b + 1),24,8);
+ myGLCD.print("-",36,8);
+ myGLCD.print(String(c + 1),48,8);
  myGLCD.print("In/Out:",0,16);
  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
  myGLCD.print("/",56,16);
@@ -355,6 +358,9 @@ delay(50);
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
+ myGLCD.print(String(b + 1),24,8);
+ myGLCD.print("-",36,8);
+ myGLCD.print(String(c + 1),48,8);
  myGLCD.print("In/Out:",0,16);
  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
  myGLCD.print("/",56,16);
@@ -377,6 +383,9 @@ delay(50);
  //------------------下面用于计算显示倒计时---------------------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
+ myGLCD.print(String(b + 1),24,8);
+ myGLCD.print("-",36,8);
+ myGLCD.print(String(c + 1),48,8);
  myGLCD.print("In/Out:",0,16);
  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
  myGLCD.print("/",56,16);
