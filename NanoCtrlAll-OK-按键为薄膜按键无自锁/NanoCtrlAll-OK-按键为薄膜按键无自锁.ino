@@ -6,24 +6,24 @@ LCD5110 myGLCD(9,8,10,11,12); //myGLCD(CLK,DIN,DC,RST,CE)
 extern uint8_t SmallFont[];
 extern uint8_t MediumNumbers[];
 extern uint8_t BigNumbers[];
-
+//---------------------------------------将暂停键改为自锁式------------------------------
  //下面两行用于定义电机控制输出端口
 int input1 = 15; // 定义uno的pin 15 向 input1 输出 
 int input2 = 16; // 定义uno的pin 16 向 input2 输出
 //下面两行用于定义继电器控制输出端口
-int sign1= 17; // 定义uno的pin 17 用于控制进水
-int sign2= 18; // 定义uno的pin 18 用于控制排水
+int sign1= 18; // 定义uno的pin 17 用于控制进水
+int sign2= 17; // 定义uno的pin 18 用于控制排水
 //下面这行用于定义控制“开始”输入端口
-int startbutton = 19; //接中断信号的脚用于控制开始
+int startbutton = 4; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
-int stopbutton = 2; //接中断信号的脚用于控制暂停
+int stopbutton = 3; //接中断信号的脚用于控制暂停
 //下面两行用于将“暂停”点触开关变自锁开关
 volatile int stop_state = 1;
 volatile int stop_ctrl = 1;
 //下面这行用于暂停中持续放/排水
 volatile int i= 1;
 //下面这行用于定义进/排水时间每摁一次加5秒的输入端口pin 14
-int addtimes = 14;
+int addtimes = 6;
 //下面两行用于定义进水、排水时间初始化，单位：秒
 volatile long basicintimes = 20;
 volatile long basicouttimes = 40;
