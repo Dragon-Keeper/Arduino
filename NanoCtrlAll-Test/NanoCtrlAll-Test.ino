@@ -260,7 +260,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 {
   delay(50);
   //Serial.println(state);
-  Serial.println("Wait for pin19 Input LOW to start works..");
+  Serial.println("Wait for pin4 Input LOW to start works..");
   Serial.println(digitalRead(sign1));
   Serial.println(digitalRead(sign2));
   //下面两行用于调试点触开关变自锁开关用
