@@ -25,8 +25,8 @@ volatile int i= 1;
 //下面这行用于定义进/排水时间每摁一次加5秒的输入端口pin 14
 int addtimes = 6;
 //下面两行用于定义进水、排水时间初始化，单位：秒
-volatile long basicintimes = 20;
-volatile long basicouttimes = 40;
+volatile long basicintimes = 15;
+volatile long basicouttimes = 55;
 //下面这行定义函数用于计算剩余时间
 volatile long remain;
 volatile long a;
@@ -281,7 +281,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
    delay(100);
 */
    basicintimes = basicintimes + 5;
-   basicouttimes = basicouttimes + 5;
+   basicouttimes = basicouttimes + 17.5; //每次添加的时间都是进水时间的3.5倍
    Serial.println(" The basicintimes is change to:");
    Serial.println(basicintimes);
    Serial.println(" The basicouttimes is change to:");
