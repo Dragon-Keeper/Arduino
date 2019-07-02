@@ -26,7 +26,7 @@ volatile int i= 1;
 int addtimes = 6;
 //下面两行用于定义进水、排水时间初始化，单位：秒
 volatile long basicintimes = 15;
-volatile long basicouttimes = 60;
+volatile long basicouttimes = 55;
 //下面这行定义函数用于计算剩余时间
 volatile long remain;
 volatile long a;
