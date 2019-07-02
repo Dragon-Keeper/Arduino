@@ -320,12 +320,12 @@ delay(50);
 
  //----------------------控制进水阀进水
  digitalWrite(sign1, HIGH); //打开进水阀
- delay(basicintimes*1000); //进水的时间默认20秒
+ delay(basicintimes*1000); //进水的时间默认15秒
  digitalWrite(sign1, LOW);  //关闭进水阀
  delay(4000);
 
  //----------------------控制马达左右转
- for(int c = 0; c < 20; c++) //一个小循环18秒，20个共6分钟
+ for(int c = 0; c < 72; c++) //一个小循环5秒，72个共6分钟
  {
   Serial.println(c);
   Serial.println("------The Small Loop------");
@@ -348,12 +348,12 @@ delay(50);
  //forward 向前转
  digitalWrite(input1,HIGH); //给高电平-顺时针转
  digitalWrite(input2,LOW);  //给低电平
- delay(8000);   //转动8秒
+ delay(2000);   //转动2秒
 
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
- delay(1000);  //停止1秒
+ delay(500);  //停止0.5秒
  
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  myGLCD.clrScr();
@@ -373,12 +373,12 @@ delay(50);
  //back 向后转
  digitalWrite(input1,LOW);  //给低电平-逆时针转
  digitalWrite(input2,HIGH); //给高电平   
- delay(8000);  //转动8秒
+ delay(2000);  //转动2秒
 
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
- delay(1000);  //停止1秒
+ delay(500);  //停止0.5秒
 
  //------------------下面用于计算显示倒计时---------------------//
  myGLCD.clrScr();
