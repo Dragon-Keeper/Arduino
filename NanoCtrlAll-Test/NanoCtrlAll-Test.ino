@@ -11,12 +11,13 @@ extern uint8_t BigNumbers[];
 int input1 = 15; // 定义uno的pin 15 向 input1 输出 
 int input2 = 16; // 定义uno的pin 16 向 input2 输出
 //下面两行用于定义继电器控制输出端口
-int sign1= 17; // 定义uno的pin 17 用于控制电磁阀进水
-int sign2= 18; // 定义uno的pin 18 用于控制水泵排水
+int sign1= 18; // 定义uno的pin 17 用于控制电磁阀进水
+int sign2= 17; // 定义uno的pin 18 用于控制水泵排水
 //下面这行用于定义控制“开始”输入端口
 int startbutton = 4; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
 int stopbutton = 3; //接中断信号的脚用于控制暂停
+int Signal = 13; //用于指示进入暂停已否的信号指示灯
 //下面两行用于将“暂停”点触开关变自锁开关
 volatile int stop_state = 1;
 volatile int stop_ctrl = 1;
@@ -46,6 +47,8 @@ pinMode(input1,OUTPUT);
 pinMode(input2,OUTPUT);
 pinMode(sign1, OUTPUT); 
 pinMode(sign2, OUTPUT); 
+pinMode(Signal, OUTPUT); 
+digitalWrite(Signal, LOW); //初始化信号灯为关闭状态
 //digitalWrite(sign1, HIGH);  //关闭进水阀
 //digitalWrite(sign2, HIGH);  //关闭排水阀
 //digitalWrite(input1,HIGH);  //停止马达
@@ -65,9 +68,10 @@ attachInterrupt(digitalPinToInterrupt(stopbutton), stop, LOW); //监视中断输
 //-------------------------开始判断是否暂停工作---------------//
 
 void stop(){
-//HIGH:断电 LOW:通电OW;
+//HIGH:断电 LOW:通电;
 for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead(stopbutton))
 {
+  digitalWrite(Signal, LOW);  //进入暂停时关闭信号指示灯
   //下面两行用于调试点触开关变自锁开关用
   Serial.println(stop_state);
   Serial.println(stop_ctrl);
@@ -299,6 +303,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
   //----------------------结束进/排水时间信号输入------------//
 }
 Serial.println("Now We Work.");
+digitalWrite(Signal, HIGH);  //开始工作时打开信号指示灯
 myGLCD.clrScr();
 myGLCD.print("Working",CENTER,0);
 myGLCD.print("In/Out:",0,16);
@@ -317,19 +322,21 @@ delay(50);
  Serial.println(b);
  Serial.println("------The Big Loop------");
  delay(3000);  //延时3秒启动
-
+digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //----------------------控制进水阀进水
  digitalWrite(sign1, HIGH); //打开进水阀
- delay(basicintimes*1000); //进水的时间默认15秒
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(basicintimes*1000); //进水的时间默认20秒
  digitalWrite(sign1, LOW);  //关闭进水阀
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  delay(4000);
 
  //----------------------控制马达左右转
- for(int c = 0; c < 72; c++) //一个小循环5秒，72个共6分钟
+ for(int c = 0; c < 20; c++) //一个小循环18秒，20个共6分钟
  {
   Serial.println(c);
   Serial.println("------The Small Loop------");
-  
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
@@ -344,17 +351,18 @@ delay(50);
  myGLCD.print(String(a),44,24);
  delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
-  
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //forward 向前转
  digitalWrite(input1,HIGH); //给高电平-顺时针转
  digitalWrite(input2,LOW);  //给低电平
- delay(2000);   //转动2秒
-
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(8000);   //转动8秒
+            
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
- delay(500);  //停止0.5秒
- 
+ delay(1000);  //停止1秒
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
@@ -369,17 +377,18 @@ delay(50);
  myGLCD.print(String(a),44,24);
  delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
- 
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //back 向后转
  digitalWrite(input1,LOW);  //给低电平-逆时针转
- digitalWrite(input2,HIGH); //给高电平   
- delay(2000);  //转动2秒
+ digitalWrite(input2,HIGH); //给高电平  
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯 
+ delay(8000);  //转动8秒
 
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
- delay(500);  //停止0.5秒
-
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(1000);  //停止1秒
  //------------------下面用于计算显示倒计时---------------------//
  myGLCD.clrScr();
  myGLCD.print("Working",CENTER,0);
@@ -397,12 +406,12 @@ delay(50);
  }
  remain = a - long(b * (basicintimes + basicouttimes) / 60); //将前面a的值赋予remain，一会再进循环继续减小
  //------------------上面用于计算显示倒计时---------------------//
-
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //----------------------控制排水阀排水
  digitalWrite(sign2, HIGH); //打开排水阀
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  delay(basicouttimes*1000); //排水的时间默认40秒
  digitalWrite(sign2, LOW);  //关闭排水阀
-
  delay(50);
  //-------------------------结束工作---------------------------//
  }
