@@ -402,7 +402,7 @@ myGLCD.print(String(remain),44,24);
   */
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
-  myGLCD.print("236", 0, 0); //等待开始
+  myGLCD.print("236", 0, 0); //开始中
   myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
   myGLCD.print("34", 0, 16); //进水
   myGLCD.print("54", 30, 16); //排水
@@ -414,6 +414,109 @@ myGLCD.print(String(remain),44,24);
   myGLCD.print(String(remain), 60, 32); 
   delay(50);
 //-------------------------结束判断是否开始工作---------------//
+
+//-------------------------开始判断是否需要浸泡工作---------------//
+if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模式
+{
+  volatile long basicintimes = 15; //重置进水时间为默认
+  volatile long basicouttimes = 55; //重置排水时间为默认
+   //----------------------控制进水阀进水
+  digitalWrite(sign1, HIGH); //打开进水阀
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  delay(basicintimes*1000); //进水的时间默认15秒
+  digitalWrite(sign1, LOW);  //关闭进水阀
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  delay(4000);
+  
+ for(int p = 0; p < 4; p++) //一个小循环15秒，4个共1分钟
+ {
+  Serial.println(p);
+  Serial.println("------The PaoShui Loop------");
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi12x16);
+  myGLCD.print("24", 0, 0); //泡水
+  myGLCD.setFont(Hanzi16x16);
+  myGLCD.print("6", 24, 0); //中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String((600 - p * 15)/60), 58, 32); 
+  delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  //forward 向前转
+  digitalWrite(input1,HIGH); //给高电平-顺时针转
+  digitalWrite(input2,LOW);  //给低电平
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  delay(6500);   //转动6.5秒
+            
+  //stop 停止
+  digitalWrite(input1,HIGH);
+  digitalWrite(input2,HIGH);  
+  delay(1000);  //停止1秒
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi12x16);
+  myGLCD.print("24", 0, 0); //泡水
+  myGLCD.setFont(Hanzi16x16);
+  myGLCD.print("6", 24, 0); //中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String((600 - p * 15)/60), 58, 32); 
+  delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  //back 向后转
+  digitalWrite(input1,LOW);  //给低电平-逆时针转
+  digitalWrite(input2,HIGH); //给高电平  
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯 
+  delay(6500);  //转动6.5秒
+
+  //stop 停止
+  digitalWrite(input1,HIGH);
+  digitalWrite(input2,HIGH);  
+  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+  delay(1000);  //停止1秒
+  //------------------下面用于计算显示倒计时---------------------//
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi12x16);
+  myGLCD.print("24", 0, 0); //泡水
+  myGLCD.setFont(Hanzi16x16);
+  myGLCD.print("6", 24, 0); //中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String((600 - p * 15)/60), 58, 32); 
+  delay(50);
+ //------------------上面用于计算显示倒计时---------------------//
+  }
+  for(int t = 0; t < 54; t++) //此循环用于延时9分钟用
+  {
+    delay(10000);
+    myGLCD.clrScr();
+      myGLCD.setFont(Hanzi12x16);
+      myGLCD.print("24", 0, 0); //泡水
+      myGLCD.setFont(Hanzi16x16);
+      myGLCD.print("6", 24, 0); //中
+      myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+      myGLCD.print("01", 52, 16); //还要
+      myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+      myGLCD.print(String((540 - t * 10)/60), 58, 32); 
+  }
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ //----------------------控制排水阀排水
+ digitalWrite(sign2, HIGH); //打开排水阀
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(basicouttimes*1000); //排水的时间默认55秒
+ digitalWrite(sign2, LOW);  //关闭排水阀
+ delay(50);
+ //-------------------------结束浸泡工作---------------------------//
+}
+//-------------------------结束判断是否需要浸泡工作---------------//
 
 //-------------------------开始工作---------------------------//
  for(int b = 0; b < 5; b++) //工作5个大循环共30分钟
