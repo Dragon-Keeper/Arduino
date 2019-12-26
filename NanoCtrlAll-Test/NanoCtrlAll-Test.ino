@@ -13,8 +13,8 @@ extern uint8_t Hanzi16x16[];
 int input1 = 15; // 定义uno的pin 15 向 input1 输出 
 int input2 = 16; // 定义uno的pin 16 向 input2 输出
 //下面两行用于定义继电器控制输出端口
-int sign1= 18; // 定义uno的pin 17 用于控制电磁阀进水
-int sign2= 17; // 定义uno的pin 18 用于控制水泵排水
+int sign1= 17; // 定义uno的pin 17 用于控制电磁阀进水
+int sign2= 18; // 定义uno的pin 18 用于控制水泵排水
 //下面这行用于定义控制“开始”输入端口
 int startbutton = 4; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
