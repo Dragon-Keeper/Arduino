@@ -89,14 +89,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
 
   if(choice == 0) //初始时choice=0，所以显示总界面
   {
-    /* 旧的纯英文显示方法
-  myGLCD.clrScr();
-  myGLCD.print("Stopping",CENTER,0);
-  myGLCD.print("Here You Can",CENTER,8);
-  myGLCD.print("Water In/Out",CENTER,16);
-  myGLCD.print("Reset System",CENTER,24);
-  myGLCD.print("Click More...",0,32);
-  */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("456", 0, 0);
@@ -130,13 +123,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   }
   if(choice == 1) //显示进水选项页面，按开始键进水，再次按开始键则停止
   {
-    /* 旧的纯英文显示方法
-  myGLCD.clrScr();
-  myGLCD.print("Stopping",CENTER,0);
-  myGLCD.print("Water In:Yes?",0,16);
-  myGLCD.print("Press To Start",CENTER,24);
-  myGLCD.print("Click More...",0,32);
-  */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("456", 0, 0);
@@ -180,13 +167,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   {
     i++;
     Serial.println("Water In Coming");
-    /*
-    myGLCD.clrScr();
-    myGLCD.print("Stopping",CENTER,0);
-    myGLCD.print("Water's Coming",0,16);
-    myGLCD.print("Press To Stop",CENTER,24);
-    myGLCD.print("Click More...",0,32);
-    */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("796", 0, 0); //进水中
@@ -212,13 +193,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   
   if(choice == 2) //显示排水选项页面，按住开始键时排水，放开则停止
   {
-  /* 旧的纯英文页面
-  myGLCD.clrScr();
-  myGLCD.print("Stopping",CENTER,0);
-  myGLCD.print("Water Out:Yes?",0,16);
-  myGLCD.print("Press To Start",CENTER,24);
-  myGLCD.print("Click More...",0,32);
-  */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("456", 0, 0);
@@ -249,13 +224,7 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   {
     i++;
     Serial.println("Water Go Outing");
-    /* 旧的纯英文页面
-    myGLCD.clrScr();
-    myGLCD.print("Stopping",CENTER,0);
-    myGLCD.print("Water's Outing",0,16);
-    myGLCD.print("Press To Stop",CENTER,24);
-    myGLCD.print("Click More...",0,32);
-    */
+
     myGLCD.clrScr();
     myGLCD.setFont(Hanzi16x16); //每行5个字
     myGLCD.print("896", 0, 0); //排水中
@@ -274,15 +243,126 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   digitalWrite(sign2, LOW); //关闭排水阀
   Serial.println("22222222222222");
   }
-  if(choice == 3) //显示复位页面
+  //------------------下面这段用于手动清洗-------------//
+  if(choice == 3) //显示手动页面
   {
-  /* 旧的纯英文页面
+
   myGLCD.clrScr();
-  myGLCD.print("Stopping",CENTER,0);
-  myGLCD.print("Reset System",CENTER,16);
-  myGLCD.print("Press To Reset",CENTER,24);
-  myGLCD.print("No More...",0,32);
-  */
+  myGLCD.setFont(Hanzi16x16); //每行5个字
+  myGLCD.print("456", 0, 0);
+  myGLCD.setFont(Hanzi12x17); 
+  myGLCD.print("0", 0, 16); //按
+  myGLCD.print("1", 16, 16); //1 数字的X轴对应数字在12的基础上加4
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("67", 24, 16); //重启
+  myGLCD.setFont(Hanzi12x17); //字模量大于9时无法解决选字问题，所以这样
+  myGLCD.print("0", 0, 32); //按
+  myGLCD.print("3", 16, 32); //3 数字的X轴对应数字在12的基础上加4
+  myGLCD.print("4567", 24, 32); //选择功能
+  delay(150);
+  if(digitalRead(addtimes) < 1) 
+  {
+  delay(50);
+  page = !page;
+  Serial.println(page);
+  choice = choice + page;
+  Serial.println(choice);
+  }
+  if(digitalRead(startbutton) < 1) //下面这段用于开启手动清洗
+  //-------------------------开始工作---------------------------//
+ for(int b = 0; b < 5; b++) //工作5个大循环共30分钟
+ {
+ Serial.println(b);
+ Serial.println("------The Big Loop------");
+ delay(3000);  //延时3秒启动
+digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(4000);
+
+ //----------------------控制马达左右转
+ for(int c = 0; c < 20; c++) //一个小循环18秒，20个共6分钟
+ {
+  Serial.println(c);
+  Serial.println("------The Small Loop------");
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi16x16); //每行5个字
+  myGLCD.print("236", 0, 0); //开始中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String(b + 1),0,24);
+  myGLCD.print("-",14,24);
+  myGLCD.print(String(c + 1),24,24);
+  myGLCD.print(String(a), 52, 32); 
+ delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ //forward 向前转
+ digitalWrite(input1,HIGH); //给高电平-顺时针转
+ digitalWrite(input2,LOW);  //给低电平
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(8000);   //转动8秒
+            
+ //stop 停止
+ digitalWrite(input1,HIGH);
+ digitalWrite(input2,HIGH);  
+ delay(1000);  //停止1秒
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi16x16); //每行5个字
+  myGLCD.print("236", 0, 0); //开始中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String(b + 1),0,24);
+  myGLCD.print("-",14,24);
+  myGLCD.print(String(c + 1),24,24);
+  myGLCD.print(String(a), 52, 32); 
+ delay(50);
+  //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ //back 向后转
+ digitalWrite(input1,LOW);  //给低电平-逆时针转
+ digitalWrite(input2,HIGH); //给高电平  
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯 
+ delay(8000);  //转动8秒
+
+ //stop 停止
+ digitalWrite(input1,HIGH);
+ digitalWrite(input2,HIGH);  
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(1000);  //停止1秒
+ //------------------下面用于计算显示倒计时---------------------//
+
+  myGLCD.clrScr();
+  myGLCD.setFont(Hanzi16x16); //每行5个字
+  myGLCD.print("236", 0, 0); //开始中
+  myGLCD.setFont(Hanzi12x16); //每行7个字（字宽12像素），最多一屏3行
+  myGLCD.print("01", 52, 16); //还要
+  myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
+  myGLCD.print(String(b + 1),0,24);
+  myGLCD.print("-",14,24);
+  myGLCD.print(String(c + 1),24,24);
+  a = remain - long(c * 18 / 60);//18为一个小循环时间
+  myGLCD.print(String(a), 52, 32); 
+ delay(50);
+ }
+ remain = a - long(b * (basicintimes + basicouttimes) / 60); //将前面a的值赋予remain，一会再进循环继续减小
+ //------------------上面用于计算显示倒计时---------------------//
+ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
+ delay(50);
+ //-------------------------结束工作---------------------------//
+ }
+  Serial.println("333333333333333");
+  }
+  //------------------上面这段用于手动清洗-------------//
+  if(choice == 4) //显示复位页面
+  {
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("456", 0, 0);
@@ -306,15 +386,15 @@ for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead
   }
   if(digitalRead(startbutton) < 1) //下面这段用于重置系统
   resetFunc(); //这句用于调用重置命令
-  Serial.println("33333333333333333");
+  Serial.println("444444444444444444");
   }
-  if(choice == 4) //用于返回第一个页面
+  if(choice == 5) //用于返回第一个页面
   {
  //自动跳出循环
   Serial.println(choice);
   delay(150);
   choice = 0;
-  Serial.println("444444444444444444");
+  Serial.println("555555555555555555");
   }
   //-------上面这段通过addtime脚的电平变低然后计算判断显示哪个页面-------//
 
@@ -364,15 +444,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
    Serial.println(basicouttimes);
    delay(100);
    }
-  /* 旧的纯英文页面
-  myGLCD.clrScr();
-  myGLCD.print("Wait For Start",CENTER,0);
-  myGLCD.print("In/Out:",0,16);
-  myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
-  myGLCD.print("/",56,16);
-  myGLCD.print(String(basicouttimes),62,16);
-  myGLCD.print("Remain:Null",0,24);
-  */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("0123", 0, 0); //等待开始
@@ -389,17 +461,7 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
 }
 Serial.println("Now We Work.");
 digitalWrite(Signal, HIGH);  //开始工作时打开信号指示灯
- /* 旧的纯英文页面
-myGLCD.clrScr();
-myGLCD.print("Working",CENTER,0);
-myGLCD.print("In/Out:",0,16);
-myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
-myGLCD.print("/",56,16);
-myGLCD.print(String(basicouttimes),62,16);
-myGLCD.print("Remain:",0,24);
-remain = 30 + (basicintimes * 5 +  basicouttimes * 5)/60;//计算剩余时间，30为预计工作总时间,5为大循环个数，除60可得对应分钟数
-myGLCD.print(String(remain),44,24);
-  */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("236", 0, 0); //开始中
@@ -540,19 +602,7 @@ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
   Serial.println("------The Small Loop------");
  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
-  /* 旧的纯英文页面
- myGLCD.clrScr();
- myGLCD.print("Working",CENTER,0);
- myGLCD.print(String(b + 1),24,8);
- myGLCD.print("-",36,8);
- myGLCD.print(String(c + 1),48,8);
- myGLCD.print("In/Out:",0,16);
- myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
- myGLCD.print("/",56,16);
- myGLCD.print(String(basicouttimes),62,16);
- myGLCD.print("Remain:",0,24);
- myGLCD.print(String(a),44,24);
- */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("236", 0, 0); //开始中
@@ -578,19 +628,7 @@ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  delay(1000);  //停止1秒
  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
-  /* 旧的纯英文页面
- myGLCD.clrScr();
- myGLCD.print("Working",CENTER,0);
- myGLCD.print(String(b + 1),24,8);
- myGLCD.print("-",36,8);
- myGLCD.print(String(c + 1),48,8);
- myGLCD.print("In/Out:",0,16);
- myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
- myGLCD.print("/",56,16);
- myGLCD.print(String(basicouttimes),62,16);
- myGLCD.print("Remain:",0,24);
- myGLCD.print(String(a),44,24);
- */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("236", 0, 0); //开始中
@@ -616,20 +654,7 @@ digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  digitalWrite(Signal, HIGH);  //工作时打开信号指示灯
  delay(1000);  //停止1秒
  //------------------下面用于计算显示倒计时---------------------//
- /* 旧的纯英文页面
- myGLCD.clrScr();
- myGLCD.print("Working",CENTER,0);
- myGLCD.print(String(b + 1),24,8);
- myGLCD.print("-",36,8);
- myGLCD.print(String(c + 1),48,8);
- myGLCD.print("In/Out:",0,16);
- myGLCD.print(String(basicintimes),44,16);//由于时间是整数，所以要转换成字符串
- myGLCD.print("/",56,16);
- myGLCD.print(String(basicouttimes),62,16);
- myGLCD.print("Remain:",0,24);
- a = remain - long(c * 18 / 60);//18为一个小循环时间
- myGLCD.print(String(a),44,24);
- */
+
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
   myGLCD.print("236", 0, 0); //开始中
