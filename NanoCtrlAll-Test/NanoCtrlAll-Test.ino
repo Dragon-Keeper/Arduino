@@ -19,7 +19,7 @@ int sign2= 18; // 定义uno的pin 18 用于控制水泵排水
 int startbutton = 4; //接中断信号的脚用于控制开始
 //下面这行用于定义中断信号控制“暂停”输入端口
 int stopbutton = 3; //接中断信号的脚用于控制暂停
-int Signal = 13; //用于指示进入暂停已否的信号指示灯
+//int Signal = 13; //用于指示进入暂停已否的信号指示灯
 //下面两行用于将“暂停”点触开关变自锁开关
 volatile int stop_state = 1;
 volatile int stop_ctrl = 1;
@@ -49,8 +49,8 @@ pinMode(input1,OUTPUT);
 pinMode(input2,OUTPUT);
 pinMode(sign1, OUTPUT); 
 pinMode(sign2, OUTPUT); 
-pinMode(Signal, OUTPUT); 
-digitalWrite(Signal, HIGH); //初始化信号灯为关闭状态
+//pinMode(Signal, OUTPUT); 
+//digitalWrite(Signal, HIGH); //初始化信号灯为关闭状态
 digitalWrite(sign1, HIGH);  //关闭进水阀
 digitalWrite(sign2, HIGH);  //关闭排水泵
 //digitalWrite(input1,HIGH);  //停止马达
@@ -73,7 +73,6 @@ void stop(){
 //HIGH:断电 LOW:通电;
 for (stop_ctrl = !stop_ctrl;stop_state + stop_ctrl == 1;stop_state = digitalRead(stopbutton))
 {
-  digitalWrite(Signal, LOW);  //进入暂停时关闭信号指示灯
   //下面两行用于调试点触开关变自锁开关用
   Serial.println(stop_state);
   Serial.println(stop_ctrl);
@@ -343,7 +342,6 @@ for (int state = HIGH;state == HIGH;state = digitalRead(startbutton))
   //----------------------结束进/排水时间信号输入------------//
 }
 Serial.println("Now We Work.");
-digitalWrite(Signal, LOW);  //开始工作时打开信号指示灯
 
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi16x16); //每行5个字
@@ -377,17 +375,17 @@ if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模�
   //---------上面用于显示进入浸泡工作用--------//
    //----------------------控制进水阀进水
   digitalWrite(sign1, LOW); //打开进水阀
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   delay(basicintimes*1000); //进水的时间默认15秒
   digitalWrite(sign1, HIGH);  //关闭进水阀
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   delay(4000);
   
  for(int p = 0; p < 4; p++) //一个小循环15秒，4个共1分钟
  {
   Serial.println(p);
   Serial.println("------The PaoShui Loop------");
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi12x16);
@@ -400,18 +398,18 @@ if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模�
   myGLCD.print(String((600 - p * 15)/60), 58, 32); 
   delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   //forward 向前转
   digitalWrite(input1,HIGH); //给高电平-顺时针转
   digitalWrite(input2,LOW);  //给低电平
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   delay(6500);   //转动6.5秒
             
   //stop 停止
   digitalWrite(input1,HIGH);
   digitalWrite(input2,HIGH);  
   delay(1000);  //停止1秒
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
   myGLCD.clrScr();
   myGLCD.setFont(Hanzi12x16);
@@ -424,17 +422,17 @@ if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模�
   myGLCD.print(String((600 - p * 15)/60), 58, 32); 
   delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   //back 向后转
   digitalWrite(input1,LOW);  //给低电平-逆时针转
   digitalWrite(input2,HIGH); //给高电平  
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯 
+   
   delay(6500);  //转动6.5秒
 
   //stop 停止
   digitalWrite(input1,HIGH);
   digitalWrite(input2,HIGH);  
-  digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+  
   delay(1000);  //停止1秒
   //------------------下面用于计算显示倒计时---------------------//
   myGLCD.clrScr();
@@ -462,10 +460,10 @@ if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模�
       myGLCD.setFont(MediumNumbers);//72对应X轴，40对应Y轴
       myGLCD.print(String((540 - t * 10)/60), 58, 32); 
   }
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  //----------------------控制排水泵排水
  digitalWrite(sign2, LOW); //打开排水泵
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  delay(basicouttimes*1000); //排水的时间默认55秒
  digitalWrite(sign2, HIGH);  //关闭排水泵
  delay(50);
@@ -479,13 +477,12 @@ if(basicintimes == 60) //如果进水时间设定为60秒，则进入浸泡模�
  Serial.println(b);
  Serial.println("------The Big Loop------");
  delay(3000);  //延时3秒启动
-digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+
  //----------------------控制进水阀进水
  digitalWrite(sign1, LOW); //打开进水阀
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
- delay(basicintimes*1000); //进水的时间默认20秒
+ delay(basicintimes*1000); //进水的时间默认15秒
  digitalWrite(sign1, HIGH);  //关闭进水阀
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  delay(4000);
 
  //----------------------控制马达左右转
@@ -493,7 +490,7 @@ digitalWrite(Signal, LOW);  //工作时打开信号指示灯
  {
   Serial.println(c);
   Serial.println("------The Small Loop------");
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
 
   myGLCD.clrScr();
@@ -508,18 +505,17 @@ digitalWrite(Signal, LOW);  //工作时打开信号指示灯
   myGLCD.print(String(a), 52, 32); 
  delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  //forward 向前转
  digitalWrite(input1,HIGH); //给高电平-顺时针转
  digitalWrite(input2,LOW);  //给低电平
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
  delay(8000);   //转动8秒
             
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
  delay(1000);  //停止1秒
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+
  //---------下面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
 
   myGLCD.clrScr();
@@ -534,17 +530,16 @@ digitalWrite(Signal, LOW);  //工作时打开信号指示灯
   myGLCD.print(String(a), 52, 32); 
  delay(50);
   //---------上面用于计算显示倒计时，已去计算倒计时代码，纯显示用--------//
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  //back 向后转
  digitalWrite(input1,LOW);  //给低电平-逆时针转
  digitalWrite(input2,HIGH); //给高电平  
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯 
  delay(8000);  //转动8秒
 
  //stop 停止
  digitalWrite(input1,HIGH);
  digitalWrite(input2,HIGH);  
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  delay(1000);  //停止1秒
  //------------------下面用于计算显示倒计时---------------------//
 
@@ -563,11 +558,10 @@ digitalWrite(Signal, LOW);  //工作时打开信号指示灯
  }
  remain = a - long(b * (basicintimes + basicouttimes) / 60); //将前面a的值赋予remain，一会再进循环继续减小
  //------------------上面用于计算显示倒计时---------------------//
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
+ 
  //----------------------控制排水泵排水
  digitalWrite(sign2, LOW); //打开排水泵
- digitalWrite(Signal, LOW);  //工作时打开信号指示灯
- delay(basicouttimes*1000); //排水的时间默认40秒
+ delay(basicouttimes*1000); //排水的时间默认55秒
  digitalWrite(sign2, HIGH);  //关闭排水泵
  delay(50);
  //-------------------------结束工作---------------------------//
