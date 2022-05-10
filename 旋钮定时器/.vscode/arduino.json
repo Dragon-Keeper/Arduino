@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:uno",
+    "programmer": "arduino:avrisp",
+    "port": "COM4",
+    "output": "./Arduino/build",
+    "sketch": "Timer_V1.0\\Timer_V1.0.ino"
+}
