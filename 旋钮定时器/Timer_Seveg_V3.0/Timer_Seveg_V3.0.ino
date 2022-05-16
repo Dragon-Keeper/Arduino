@@ -56,7 +56,7 @@ Quit_The_Work:
         }
         display.clear();
         display.showNumberDec(counter, false);
-        delay(TEST_DELAY);
+        //delay(10); //此处不能加延时，否则影响数据加减
     }
 
     if (digitalRead(EC11_DATA_key) == LOW) //如果按压低电平则开始抽水
