@@ -56,7 +56,7 @@ Quit_The_Work:
         }
         display.clear();
         display.showNumberDec(counter, false);
-        //delay(10); //此处不能加延时，否则影响数据加减
+        // delay(10); //此处不能加延时，否则影响数据加减
     }
 
     if (digitalRead(EC11_DATA_key) == LOW) //如果按压低电平则开始抽水
@@ -69,16 +69,18 @@ Quit_The_Work:
             if (digitalRead(EC11_DATA_key) == LOW)
             {
                 digitalWrite(valve, LOW); //继电器控制停止抽水
-                delay(1000);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
-                goto Quit_The_Work;       //转跳到标记
+                delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+                display.showNumberDec(counter, false);
+                goto Quit_The_Work; //转跳到标记
             }
             //将延时分成两份，可以增强控制
             delay(500);
             if (digitalRead(EC11_DATA_key) == LOW)
             {
                 digitalWrite(valve, LOW); //继电器控制停止抽水
-                delay(1000);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
-                goto Quit_The_Work;       //转跳到标记
+                delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+                display.showNumberDec(counter, false);
+                goto Quit_The_Work; //转跳到标记
             }
             display.clear();
             display.showNumberDec(W_counter, false);
@@ -94,12 +96,12 @@ Quit_The_Work:
 
     if (digitalRead(EC11_DATA_key) == LOW && counter == 0) //如果按压低电平且计时器为0则不停抽水直到再次按压关停
     {
-        delay(500); //延时0.5秒，让Sw键重新高电平从而进入抽水状态
+        delay(500);                //延时0.5秒，让Sw键重新高电平从而进入抽水状态
         digitalWrite(valve, HIGH); //继电器控制开始抽水
         if (digitalRead(EC11_DATA_key) == LOW)
         {
             digitalWrite(valve, LOW); //继电器控制停止抽水
-            delay(1000);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+            delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
             goto Quit_The_Work;       //转跳到标记
         }
         //将延时分成两份，可以增强控制
@@ -107,7 +109,7 @@ Quit_The_Work:
         if (digitalRead(EC11_DATA_key) == LOW)
         {
             digitalWrite(valve, LOW); //继电器控制停止抽水
-            delay(1000);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+            delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
             goto Quit_The_Work;       //转跳到标记
         }
     }
