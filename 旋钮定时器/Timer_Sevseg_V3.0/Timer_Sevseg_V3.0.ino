@@ -54,7 +54,6 @@ Quit_The_Work:
                 counter = 0;
             }
         }
-        display.clear();
         display.showNumberDec(counter, false);
         // delay(10); //此处不能加延时，否则影响数据加减
     }
@@ -82,13 +81,11 @@ Quit_The_Work:
                 display.showNumberDec(counter, false);
                 goto Quit_The_Work; //转跳到标记
             }
-            display.clear();
             display.showNumberDec(W_counter, false);
             delay(TEST_DELAY);
         }
         digitalWrite(valve, LOW); //继电器控制停止抽水
         delay(10);                //消抖
-        display.clear();
         display.showNumberDec(counter, false);
         delay(TEST_DELAY);
         goto Quit_The_Work; //转跳到标记
