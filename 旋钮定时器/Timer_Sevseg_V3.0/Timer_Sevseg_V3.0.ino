@@ -1,3 +1,8 @@
+/*  
+    使用LM2596为Arduino Nano供电时，LM2596输出端需要调节到10-11V，才能使Nano的5V输出端电压达到5v，
+    如果LM2596输出端需要调节到7-9V左右时，Nano的5V输出端电压达不到5v，外设工作异常。
+*/
+
 #include <Wire.h>
 #include <TM1637Display.h>
 
