@@ -1,0 +1,1 @@
+把i2cdevlib-master.zip里的内容解压，将Arduino文件夹里的I2Cdev和MUP6050文件夹复制到Arduino软件的Libraries文件夹内就行

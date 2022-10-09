@@ -1,0 +1,127 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\cores\\esp8266"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\variants\\nodemcu"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "Wire.h",
+    "Includepath": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\libraries\\Wire"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "I2Cdev.h",
+    "Includepath": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\I2Cdev"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "MPU6050.h",
+    "Includepath": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\MPU6050"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "Adafruit_GFX.h",
+    "Includepath": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "Adafruit_I2CDevice.h",
+    "Includepath": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_BusIO"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "SPI.h",
+    "Includepath": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\libraries\\SPI"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "Adafruit_SSD1306.h",
+    "Includepath": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_SSD1306"
+  },
+  {
+    "Sourcefile": "c:\\Users\\Debug\\Desktop\\MPU6050\\build\\sketch\\T1_OLED_FUNCTION.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\libraries\\Wire\\Wire.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\I2Cdev\\I2Cdev.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\MPU6050\\MPU6050.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\MPU6050\\MPU6050_6Axis_MotionApps20.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\MPU6050\\MPU6050_6Axis_MotionApps612.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\MPU6050\\MPU6050_9Axis_MotionApps41.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library\\Adafruit_GFX.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library\\Adafruit_GrayOLED.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library\\Adafruit_SPITFT.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_GFX_Library\\glcdfont.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_BusIO_Register.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_I2CDevice.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_BusIO\\Adafruit_SPIDevice.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\3.0.2\\libraries\\SPI\\SPI.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\Debug\\Documents\\Arduino\\libraries\\Adafruit_SSD1306\\Adafruit_SSD1306.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
