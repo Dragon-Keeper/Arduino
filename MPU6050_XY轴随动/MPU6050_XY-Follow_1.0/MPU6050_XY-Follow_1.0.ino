@@ -108,8 +108,8 @@ void setup()
     Wire.begin();
     Serial.begin(115200);
 
-    myservo.attach(12);  // 该舵机由arduino第九脚控制，通过PWM控制
-    myservo2.attach(13); // 该舵机由arduino第八脚控制，通过PWM控制
+    myservo.attach(12);  // 该舵机由arduino_D6控制，通过PWM控制绕Z轴左右转
+    myservo2.attach(13); // 该舵机由arduino_D7控制，通过PWM控制绕Y轴左右转
 
     oled.begin(SSD1306_SWITCHCAPVCC, 0x3C);
     oled.setTextColor(WHITE); //开像素点发光
