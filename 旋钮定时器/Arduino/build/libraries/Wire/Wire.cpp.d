@@ -1,4 +1,4 @@
-c:\Users\25\Desktop\旋钮定时器\Arduino\build\libraries\Wire\Wire.cpp.o: \
+c:\Users\25\Documents\GitHub\Arduino\旋钮定时器\Arduino\build\libraries\Wire\Wire.cpp.o: \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\libraries\Wire\src\Wire.cpp \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\libraries\Wire\src\utility/twi.h \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\libraries\Wire\src\Wire.h \

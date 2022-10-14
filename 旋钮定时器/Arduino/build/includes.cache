@@ -10,17 +10,17 @@
     "Includepath": "C:\\Users\\25\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\variants\\standard"
   },
   {
-    "Sourcefile": "c:\\Users\\25\\Desktop\\旋钮定时器\\Arduino\\build\\sketch\\Timer_V1.0.ino.cpp",
+    "Sourcefile": "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Arduino\\build\\sketch\\Timer_Sevseg_Mos_V2.0.ino.cpp",
     "Include": "Wire.h",
     "Includepath": "C:\\Users\\25\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.4\\libraries\\Wire\\src"
   },
   {
-    "Sourcefile": "c:\\Users\\25\\Desktop\\旋钮定时器\\Arduino\\build\\sketch\\Timer_V1.0.ino.cpp",
-    "Include": "LiquidCrystal_I2C.h",
-    "Includepath": "C:\\Users\\25\\Documents\\Arduino\\libraries\\LiquidCrystal_I2C-1.1.3"
+    "Sourcefile": "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Arduino\\build\\sketch\\Timer_Sevseg_Mos_V2.0.ino.cpp",
+    "Include": "TM1637Display.h",
+    "Includepath": "C:\\Users\\25\\Documents\\Arduino\\libraries\\TM1637"
   },
   {
-    "Sourcefile": "c:\\Users\\25\\Desktop\\旋钮定时器\\Arduino\\build\\sketch\\Timer_V1.0.ino.cpp",
+    "Sourcefile": "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Arduino\\build\\sketch\\Timer_Sevseg_Mos_V2.0.ino.cpp",
     "Include": "",
     "Includepath": null
   },
@@ -35,7 +35,7 @@
     "Includepath": null
   },
   {
-    "Sourcefile": "C:\\Users\\25\\Documents\\Arduino\\libraries\\LiquidCrystal_I2C-1.1.3\\LiquidCrystal_I2C.cpp",
+    "Sourcefile": "C:\\Users\\25\\Documents\\Arduino\\libraries\\TM1637\\TM1637Display.cpp",
     "Include": "",
     "Includepath": null
   }

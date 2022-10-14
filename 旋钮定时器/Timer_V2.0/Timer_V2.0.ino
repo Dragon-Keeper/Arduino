@@ -1,3 +1,7 @@
+/*
+这个是用LCD显示并用继电器控制电磁阀版本
+*/
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h> //Default Arduino LCD Librarey is included
 //设置LCD1602设备地址，这里的地址是0x3F，一般是0x20，或者0x27，具体看模块手册

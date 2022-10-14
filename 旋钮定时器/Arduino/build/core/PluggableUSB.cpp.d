@@ -1,4 +1,4 @@
-c:\Users\25\Desktop\旋钮定时器\Arduino\build\core\PluggableUSB.cpp.o: \
+c:\Users\25\Documents\GitHub\Arduino\旋钮定时器\Arduino\build\core\PluggableUSB.cpp.o: \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\PluggableUSB.cpp \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\USBAPI.h \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\Arduino.h \

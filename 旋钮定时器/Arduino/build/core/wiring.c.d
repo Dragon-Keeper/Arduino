@@ -1,4 +1,4 @@
-c:\Users\25\Desktop\旋钮定时器\Arduino\build\core\wiring.c.o: \
+c:\Users\25\Documents\GitHub\Arduino\旋钮定时器\Arduino\build\core\wiring.c.o: \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\wiring.c \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\wiring_private.h \
  C:\Users\25\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.4\cores\arduino\Arduino.h \

@@ -1,7 +1,7 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "arduino:avrisp",
-    "port": "COM4",
+    "port": "COM3",
     "output": "./Arduino/build",
-    "sketch": "Timer_V1.0\\Timer_V1.0.ino"
+    "sketch": "Timer_Sevseg_Mos_V2.0\\Timer_Sevseg_Mos_V2.0.ino"
 }

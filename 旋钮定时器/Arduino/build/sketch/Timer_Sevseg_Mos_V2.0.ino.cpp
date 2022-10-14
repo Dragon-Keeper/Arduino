@@ -1,3 +1,5 @@
+#include <Arduino.h>
+#line 1 "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Timer_Sevseg_Mos_V2.0\\Timer_Sevseg_Mos_V2.0.ino"
 /*  
     EC11外壳固定引脚接地防静电感应触发按压功能，应该接到电源的地线，不要接到arduino的地线，否则会有干扰了；
     使用LM2596为Arduino Nano供电时，LM2596输出端需要调节到10-11V，才能使Nano的5V输出端电压达到5v，
@@ -28,6 +30,45 @@ int State;
 int old_State;
 int valve = 12; // 接MosFET隔离模块，高电平时接通
 
+class DaleyTimes // Class Member Variables
+{
+    // These are initialized at startup
+    long WaitTime;                // milliseconds of Wait-time
+    unsigned long previousMillis; // will store last time things was updated
+public:
+    DaleyTimes(long on)
+    {
+        WaitTime = on;
+        previousMillis = 0;
+    }
+    void Update()
+    {
+        unsigned long currentMillis = millis();
+        if (currentMillis - previousMillis >= WaitTime)
+        {
+            previousMillis = currentMillis; // Remember the time
+            Serial.print(F("Wait time is:"));
+            Serial.println(WaitTime);
+        }
+    }
+};
+
+DaleyTimes time05(500);
+DaleyTimes time001(10);
+DaleyTimes time005(50);
+
+/*
+//在loop中调用以下语句来达到延时目的，各计时器间互不影响
+    time05.Update();
+    time001.Update();
+    time005.Update();
+*/
+
+#line 65 "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Timer_Sevseg_Mos_V2.0\\Timer_Sevseg_Mos_V2.0.ino"
+void setup();
+#line 79 "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Timer_Sevseg_Mos_V2.0\\Timer_Sevseg_Mos_V2.0.ino"
+void loop();
+#line 65 "c:\\Users\\25\\Documents\\GitHub\\Arduino\\旋钮定时器\\Timer_Sevseg_Mos_V2.0\\Timer_Sevseg_Mos_V2.0.ino"
 void setup()
 {
     pinMode(EC11_DATA_key, INPUT_PULLUP); //输入上拉
@@ -63,61 +104,62 @@ Quit_The_Work:
             }
         }
         display.showNumberDec(counter, false);
-        // delay(10); //此处不能加延时，否则影响数据加减
+        // time1.Update(); //此处不能加延时，否则影响数据加减
     }
 
     if (digitalRead(EC11_DATA_key) == LOW) //如果按压低电平则开始抽水
     {
-        delay(500); //延时0.5秒，让Sw键重新高电平从而进入抽水状态
+        time05.Update(); //延时0.5秒，让Sw键重新高电平从而进入抽水状态
         for (int W_counter = counter; W_counter > 0; W_counter = W_counter - 1)
         {
             digitalWrite(valve, HIGH); //继电器控制开始抽水
-            delay(500);
+            time05.Update();
             if (digitalRead(EC11_DATA_key) == LOW)
             {
                 digitalWrite(valve, LOW); //继电器控制停止抽水
-                delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+                time05.Update();              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
                 display.showNumberDec(counter, false);
                 goto Quit_The_Work; //转跳到标记
             }
             //将延时分成两份，可以增强控制
-            delay(500);
+            time05.Update();
             if (digitalRead(EC11_DATA_key) == LOW)
             {
                 digitalWrite(valve, LOW); //继电器控制停止抽水
-                delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+                time05.Update();              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
                 display.showNumberDec(counter, false);
                 goto Quit_The_Work; //转跳到标记
             }
             display.showNumberDec(W_counter, false);
-            delay(TEST_DELAY);
+            time005.Update(); //delay(TEST_DELAY); 显示刷新时间间隔
         }
         digitalWrite(valve, LOW); //继电器控制停止抽水
-        delay(10);                //消抖
+        time001.Update();               //消抖
         display.showNumberDec(counter, false);
-        delay(TEST_DELAY);
+        time005.Update(); //delay(TEST_DELAY); 显示刷新时间间隔
         goto Quit_The_Work; //转跳到标记
     }
 
     if (digitalRead(EC11_DATA_key) == LOW && counter == 0) //如果按压低电平且计时器为0则不停抽水直到再次按压关停
     {
-        delay(500);                //延时0.5秒，让Sw键重新高电平从而进入抽水状态
+        time05.Update();                //延时0.5秒，让Sw键重新高电平从而进入抽水状态
         digitalWrite(valve, HIGH); //继电器控制开始抽水
         if (digitalRead(EC11_DATA_key) == LOW)
         {
             digitalWrite(valve, LOW); //继电器控制停止抽水
-            delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+            time05.Update();              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
             goto Quit_The_Work;       //转跳到标记
         }
         //将延时分成两份，可以增强控制
-        delay(500);
+        time05.Update();
         if (digitalRead(EC11_DATA_key) == LOW)
         {
             digitalWrite(valve, LOW); //继电器控制停止抽水
-            delay(500);              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
+            time05.Update();              //必须要有这个延时，才能让语句不那么快又执行到检测到按压低电平
             goto Quit_The_Work;       //转跳到标记
         }
     }
 
     old_State = State; // the first position was changed
 }
+
