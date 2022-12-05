@@ -3,5 +3,6 @@
     "port": "COM3",
     "programmer": "arduino:avrisp",
     "configuration": "cpu=atmega328old",
+    "output": "./Arduino/build",
     "sketch": "Laser_1306_KLM\\Laser_1306_KLM.ino"
 }
